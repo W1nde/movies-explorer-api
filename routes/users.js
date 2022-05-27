@@ -6,9 +6,9 @@ const {
   patchUser
 } = require('../controllers/users');
 
-router.get('/me', getUser);
+router.get('/me', getUser); // получение данных пользователя
 
-router.patch(
+router.patch( // обновление данных пользователя
   '/me',
   celebrate({
     body: Joi.object().keys({

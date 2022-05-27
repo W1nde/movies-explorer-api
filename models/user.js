@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const { default: isEmail } = require('validator/lib/isEmail');
 
+// модель пользователя
+
 const userSchema = new mongoose.userSchema ({
   email: {
     type: String,

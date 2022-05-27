@@ -7,9 +7,9 @@ const {
   deleteMovie
 } = require('../controllers/movies');
 
-router.get('/', getMovies);
+router.get('/', getMovies); // получение фильмов
 
-router.post(
+router.post( // создание фильма
   '/',
   celebrate({
     body: Joi.object().keys({
@@ -30,7 +30,7 @@ router.post(
   createMovie,
 );
 
-router.delete(
+router.delete( // удаление фильма
   '/:moviedId',
   celebrate({
     params: Joi.object().keys({
