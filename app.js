@@ -85,7 +85,7 @@ app.post('/signin', celebrate ({
 app.use(auth);
 
 // Пути
-app.use('/user', require('./routes/user'));
+app.use('/users', require('./routes/users'));
 app.use('/movies', require('./routes/movies'))
 app.all('*', (req, res, next) => {
   next (new NotFound('Ошибка 404, страница не найдена'))
