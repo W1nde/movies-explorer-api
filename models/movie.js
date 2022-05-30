@@ -3,7 +3,7 @@ const { default: isURL } = require('validator/lib/isURL');
 
 // модель фильма
 
-const movieSchema = new mongoose.Shema ({
+const movieSchema = new mongoose.Schema ({
   country: {
     type: String,
     required: true,
@@ -61,13 +61,13 @@ const movieSchema = new mongoose.Shema ({
   },
 
   owner: {
-    type: mongoose.Shema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: 'user',
   },
 
   moviedId: {
-    type: mongoose.Shema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
     // ref ???
   },
