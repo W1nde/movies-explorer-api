@@ -14,10 +14,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+// подключение бд
+const mongoose = require('mongoose');
 
-/* mongoose.connect('url', {
+mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
-}); */
+});
 
 // авторизация
 const { login, createUser } = require('./controllers/user');
@@ -28,18 +30,13 @@ const errorCatcher = require('./errors/errorCatcher');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const NotFound = require('./errors/NofFound');
 
-app.use(requestLogger);
-app.use(errorLogger);
-app.use(errors());
-app.use(errorCatcher);
-
 /* app.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Сервер сделал бум');
   }, 0)
 }); */
 
-// Вайтлист CORS-запросов
+// вайтлист CORS-запросов
 const allowedCors = [
   'https://praktikum.tk',
   'http://praktikum.tk',
@@ -52,7 +49,7 @@ const allowedCors = [
   'https://movies-explorer-site.nomoreparties.sbs',
 ];
 
-// Обработка CORS-запросов
+// обработка CORS-запросов
 app.use ((req, res, next) => {
   const { origin } = req.headers;
   const { method } = req;
@@ -68,7 +65,10 @@ app.use ((req, res, next) => {
   return next();
 });
 
-// Регистрация
+// логирование запросов
+app.use(requestLogger);
+
+// регистрация
 app.post('/signup', celebrate ({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
@@ -78,7 +78,7 @@ app.post('/signup', celebrate ({
 }), createUser);
 
 
-// Вход
+// вход
 app.post('/signin', celebrate ({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
@@ -88,11 +88,16 @@ app.post('/signin', celebrate ({
 
 app.use(auth);
 
-// Пути
+// пути
 app.use('/users', require('./routes/users'));
 app.use('/movies', require('./routes/movies'))
 app.all('*', (req, res, next) => {
   next (new NotFound('Ошибка 404, страница не найдена'))
 });
+
+// логирование и отслеживание ошибок
+app.use(errorLogger);
+app.use(errors());
+app.use(errorCatcher);
 
 app.listen(PORT);
