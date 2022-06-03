@@ -11,4 +11,4 @@ const allowedCors = [
   'https://movies-explorer-site.nomoreparties.sbs',
 ];
 
-module.exports = {allowedCors, errMessages };
+module.exports = allowedCors;
