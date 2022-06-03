@@ -2,7 +2,7 @@ const Movie = require('../models/movie');
 
 const Forbidden = require('../errors/Forbidden');
 const NotFound = require('../errors/NofFound');
-const ValidationError = require('../errors/ValidationError');
+const { errorMessages } = require('../utils/errorMessages')
 
 module.exports.createMovie = (req, res, next) => { // создание фильма
   const { country, director, durtion, year, description, image, trailerLink, thumbnail, movieId, nameRU, nameEN } = req.body; // беру параметры фильма из тела запроса
@@ -21,10 +21,10 @@ module.exports.getMovies = (req, res, next) => { // получение филь�
 module.exports.deleteMovie = (req, res, next) => { // удаление фильма
   Movie.findById(req.params.movieId)
     .orFail()
-    .cath(() => new NotFound ('Фильм не найден'))
+    .cath(() => new NotFound (errorMessages.movieNotFoundError))
     .then((movie) => {
       if (req.user._id !== movie.owner.toString()) {
-        throw new Forbidden('Вы не можете удалить сохранённый другим пользователем фильм')
+        throw new Forbidden(errorMessages.deleteMovieError)
       }
       Movie.findByIdAndDelete(req.params.movieId)
         .then((movieData) => {

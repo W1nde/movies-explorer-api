@@ -8,6 +8,7 @@ const CastError = require('../errors/CastError');
 const Conflict = require('../errors/Conflict');
 const NotFound = require('../errors/NofFound');
 const ValidationError = require('../errors/ValidationError');
+const { errorMessages } = require('../utils/errorMessages');
 
 const { JWT_SECRET = '2B4B6150645367566B5970337336763979244226452948404D6351655468576D' } = process.env; // псевдослучайный криптоустойчивый ключ
 
@@ -27,9 +28,9 @@ module.exports.createUser = (req, res, next) => { // создание польз
   })
     .catch((err) => {
       if (err.code === 11000) {
-        next(new Conflict('Пользователь с таким адресом электронной почты уже существует'));
+        next(new Conflict(errorMessages.conflictError));
       } else if (err.name === 'CastError') {
-        next(new ValidationError('Введены некорректные данные'));
+        next(new ValidationError(errorMessages.dataError));
       } else {
         next(err)
       }
@@ -42,10 +43,10 @@ module.exports.patchUser = (req, res, next) => { // обновление име�
     .then((user) => res.send({ _id: user._id, name, email }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new ValidationError('Введены некорректные данные'));
+        next(new ValidationError(errorMessages.dataError));
       }
       if (err.name === 'CastError') {
-        next(new CastError('Введены некорректные данные'));
+        next(new CastError(errorMessages.dataError));
       }
       nexti(err);
   });
@@ -56,7 +57,7 @@ module.exports.getUser = (req, res, next) => { // получение данны�
   User.find({ _id })
     .then((user) => {
       if (!user) {
-        return next(new NotFound('Указанный пользователь не найден'));
+        return next(new NotFound(errorMessages.userNotFoundError));
       }
       return res.send(...user);
   })

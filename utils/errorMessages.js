@@ -1,6 +1,6 @@
 const errorMessages = {
   linkError: 'Это поле должно содержать ссылку',
-  dataError: 'Переданы неккоректные данные',
+  dataError: 'Введены некорректные данные',
   movieNotFoundError: 'Фильм не найден',
   userNotFoundError: 'Данный пользователь не найден',
   deleteMovieError: 'Вы не можете удалить фильм сохранённый другим пользователем',
