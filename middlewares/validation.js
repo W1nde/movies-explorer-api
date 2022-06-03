@@ -3,14 +3,14 @@ const validator = require('validator');
 
 const { errorMessages } = require('../utils/errorMessages');
 
-module.exports.patchUserValidityCheck = celebrate({
+module.exports.patchUserValidationCheck = celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30).required(),
     email: Joi.string().email().required(),
   }),
 });
 
-module.exports.createMovieValidityCheck = celebrate({
+module.exports.createMovieValidationCheck = celebrate({
   body: Joi.object().keys({
     country: Joi.string().required(),
     director: Joi.string().required(),
@@ -41,13 +41,13 @@ module.exports.createMovieValidityCheck = celebrate({
   }),
 });
 
-module.exports.deleteMovieValidityCheck = celebrate({
+module.exports.deleteMovieValidationCheck = celebrate({
   params: Joi.object().keys({
     movieId: Joi.string().length(24).hex().required(),
   }),
 });
 
-module.exports.registrationValidityCheck = celebrate({
+module.exports.registrationValidationCheck = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required(),
