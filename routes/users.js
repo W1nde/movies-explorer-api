@@ -4,7 +4,7 @@ const { celebrate, Joi } = require('celebrate');
 const {
   getUser,
   patchUser
-} = require('../controllers/user');
+} = require('../controllers/users');
 
 router.get('/me', getUser); // получение данных пользователя
 

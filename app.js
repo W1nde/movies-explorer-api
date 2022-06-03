@@ -7,7 +7,6 @@ const { PORT=3000 } = process.env;
 const app = express();
 
 const bodyParser = require('body-parser'); // подключение библиотеки для работы с телом запроса
-
 const cookieParser = require('cookie-parser'); // подключение библиотеки для работы с куки
 
 app.use(bodyParser.json());
@@ -21,8 +20,11 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
 });
 
+const cors = require('./middlewares/cors');
+const routes = require
+
 // авторизация
-const { login, createUser } = require('./controllers/user');
+const { login, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 
 // отслеживание и логирование ошибок
@@ -35,35 +37,6 @@ const NotFound = require('./errors/NofFound');
     throw new Error('Сервер сделал бум');
   }, 0)
 }); */
-
-// вайтлист CORS-запросов
-const allowedCors = [
-  'https://praktikum.tk',
-  'http://praktikum.tk',
-  'http://localhost:3000',
-  'https://localhost:3000',
-  'localhost:3000',
-  'http://movies-explorer.nomoreparties.sbs', // адрес бэкенда
-  'https://movies-explorer.nomoreparties.sbs',
-  'http://movies-explorer-site.nomoreparties.sbs', // адрес клиентской части
-  'https://movies-explorer-site.nomoreparties.sbs',
-];
-
-// обработка CORS-запросов
-app.use ((req, res, next) => {
-  const { origin } = req.headers;
-  const { method } = req;
-  const reqHeaders = req.headers['access-control-request-headers'];
-  const DEFAULT_ALLOWED_METHOD = 'GET,HEAD,PUT,PATCH,POST,DELETE';
-  res.header('Access-Control-Allow-Origin', origin);
-  res.header('Acess-Controll-Allow-Credentials', true);
-  if (allowedCors.includes(origin)) {
-    res.header('Access-Control-Allow-Methods', DEFAULT_ALLOWED_METHOD)
-    res.header('Access-Control-Allow-Headers', reqHeaders);
-    return res.end();
-  }
-  return next();
-});
 
 // логирование запросов
 app.use(requestLogger);
