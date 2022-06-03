@@ -24,6 +24,7 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 
 const cors = require('./middlewares/cors'); // CORS
 const routes = require('./routes');
+const limiter = require('./middlewares/limiter');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { errorMessages } = require('./utils/errorMessages');
 
@@ -38,6 +39,8 @@ app.use(cors) // CORS
 const errorCatcher = require('./errors/errorCatcher');
 
 app.use(requestLogger); // логирование запросов
+
+app.user('/', limiter) // использование лимитера
 
 routes(app); // использование роутов
 
