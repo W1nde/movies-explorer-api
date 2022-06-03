@@ -6,7 +6,7 @@ const User = require('../models/user');
 
 const CastError = require('../errors/CastError');
 const Conflict = require('../errors/Conflict');
-const NotFound = require('../errors/NofFound');
+const NotFound = require('../errors/NotFound');
 const ValidationError = require('../errors/ValidationError');
 const { errorMessages } = require('../utils/errorMessages');
 

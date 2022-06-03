@@ -1,7 +1,7 @@
 const Movie = require('../models/movie');
 
 const Forbidden = require('../errors/Forbidden');
-const NotFound = require('../errors/NofFound');
+const NotFound = require('../errors/NotFound');
 const { errorMessages } = require('../utils/errorMessages')
 
 module.exports.createMovie = (req, res, next) => { // создание фильма
