@@ -8,10 +8,12 @@ const app = express();
 
 const bodyParser = require('body-parser'); // подключение библиотеки для работы с телом запроса
 const cookieParser = require('cookie-parser'); // подключение библиотеки для работы с куки
+const helmet = require('helmet'); // модуль безопасности helmet
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(helmet());
 
 // подключение бд
 const mongoose = require('mongoose');
