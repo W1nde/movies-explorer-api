@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { celebrate, Joi, errors } = require('celebrate'); // подключение библиотек валидации
+const { errors } = require('celebrate'); // подключение библиотек валидации
 
 const { PORT=3000 } = process.env;
 
@@ -20,17 +20,12 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
 });
 
-const cors = require('./middlewares/cors');
-const routes = require
-
-// авторизация
-const { login, createUser } = require('./controllers/users');
-const auth = require('./middlewares/auth');
-
-// отслеживание и логирование ошибок
-const errorCatcher = require('./errors/errorCatcher');
+const cors = require('./middlewares/cors'); // CORS
+const routes = require('./routes');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const NotFound = require('./errors/NofFound');
+const { errorMessages } = require('./utils/errorMessages');
+
+app.use(cors) // CORS
 
 /* app.get('/crash-test', () => {
   setTimeout(() => {
@@ -38,35 +33,11 @@ const NotFound = require('./errors/NofFound');
   }, 0)
 }); */
 
-// логирование запросов
-app.use(requestLogger);
+const errorCatcher = require('./errors/errorCatcher');
 
-// регистрация
-app.post('/signup', celebrate ({
-  body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required(),
-    name: Joi.string().required().min(2).max(30),
-  }),
-}), createUser);
+app.use(requestLogger); // логирование запросов
 
-
-// вход
-app.post('/signin', celebrate ({
-  body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required(),
-  }),
-}), login)
-
-app.use(auth);
-
-// пути
-app.use('/users', require('./routes/users'));
-app.use('/movies', require('./routes/movies'))
-app.all('*', (req, res, next) => {
-  next (new NotFound('Ошибка 404, страница не найдена'))
-});
+routes(app); // использование роутов
 
 // логирование и отслеживание ошибок
 app.use(errorLogger);
