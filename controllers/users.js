@@ -46,7 +46,7 @@ module.exports.patchUser = (req, res, next) => { // обновление име�
       if (err.name === 'CastError') {
         next(new CastError(errorMessages.dataError));
       }
-      nexti(err);
+      next(err);
   });
 };
 

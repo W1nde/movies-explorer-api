@@ -42,7 +42,7 @@ const errorCatcher = require('./errors/errorCatcher');
 
 app.use(requestLogger); // логирование запросов
 
-app.user('/', limiter) // использование лимитера
+app.use('/', limiter) // использование лимитера
 
 routes(app); // использование роутов
 
