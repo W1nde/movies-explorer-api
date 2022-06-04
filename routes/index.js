@@ -3,6 +3,7 @@ const authorization = require('./auth'); // routes/auth
 const movies = require('./movies');
 const users = require('./users');
 const auth = require('../middlewares/auth'); // middlewares/auth
+
 const NotFound = require('../errors/NotFound');
 const { errorMessages } = require('../utils/errorMessages');
 
