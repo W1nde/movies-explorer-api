@@ -25,7 +25,7 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 });
 
 const cors = require('./middlewares/cors'); // CORS
-const routes = require('./routes');
+const routes = require('./routes'); // портирование роутов
 const limiter = require('./middlewares/limiter');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { errorMessages } = require('./utils/errorMessages');
