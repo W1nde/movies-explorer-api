@@ -38,6 +38,7 @@
     "mongoose": "^6.2.10",
     "validator": "^13.7.0",
     "winston": "^3.7.2",
-    "winston-express": "^0.1.1"
+    "winston-express": "^0.1.1",
+    "helmet": "^5.1.0"
   }
 }
