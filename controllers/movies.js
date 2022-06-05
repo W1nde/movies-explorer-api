@@ -9,19 +9,19 @@ module.exports.createMovie = (req, res, next) => { // создание филь�
   const owner = req.user_id; // присваиваю параметру 'owner' id юзера
   Movie.create({ country, director, durtion, year, description, image, trailerLink, thumbnail, movieId, nameRU, nameEN, owner }) // создаю массив из полученных ранее объектов
     .then((movie) => res.send(movie)) // передаю фильм в ответ
-    .cath(next);
+    .catch(next);
 };
 
 module.exports.getMovies = (req, res, next) => { // получение фильма
   Movie.find({})
     .then((movies) => res.send(movies))
-    .cath(next);
+    .catch(next);
 };
 
 module.exports.deleteMovie = (req, res, next) => { // удаление фильма
   Movie.findById(req.params.movieId)
     .orFail()
-    .cath(() => new NotFound (errorMessages.movieNotFoundError))
+    .catch(() => new NotFound (errorMessages.movieNotFoundError))
     .then((movie) => {
       if (req.user._id !== movie.owner.toString()) {
         throw new Forbidden(errorMessages.deleteMovieError)
@@ -30,7 +30,7 @@ module.exports.deleteMovie = (req, res, next) => { // удаление филь�
         .then((movieData) => {
           res.send({ data: movieData });
         })
-      .cath(next);
+      .catch(next);
     })
-  .cath(next);
+  .catch(next);
 };

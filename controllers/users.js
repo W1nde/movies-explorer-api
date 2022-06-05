@@ -59,7 +59,7 @@ module.exports.getUser = (req, res, next) => { // получение данны�
       }
       return res.send(...user);
   })
-  .cath(next)
+  .catch(next)
 };
 
 module.exports.login = (req, res, next) => { // логирование
@@ -83,5 +83,5 @@ module.exports.login = (req, res, next) => { // логирование
       // возвращение токена
       res.send({ token });
     })
-  .cath(next);
+  .catch(next);
 };
