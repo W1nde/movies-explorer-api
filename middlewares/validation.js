@@ -55,7 +55,7 @@ module.exports.registrationValidationCheck = celebrate({
   }),
 });
 
-module.exports.loginValidityCheck = celebrate({
+module.exports.loginValidationCheck = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required(),
