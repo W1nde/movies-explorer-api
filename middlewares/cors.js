@@ -1,4 +1,4 @@
-const { allowedCors } = require('../utils/allowedCors');
+const allowedCors = require('../utils/allowedCors');
 
 // обработка CORS-запросов
 module.exports = (function (req, res, next) {
