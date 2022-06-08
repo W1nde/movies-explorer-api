@@ -18,6 +18,7 @@ module.exports.createMovie = (req, res, next) => { // создание филь�
     nameRU,
     nameEN,
   } = req.body; // беру параметры фильма из тела запроса
+
   const owner = req.user_id; // присваиваю параметру 'owner' id юзера
   Movie.create({
     country,
