@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs/dist/bcrypt');
 const mongoose = require('mongoose');
 const { default: isEmail } = require('validator/lib/isEmail');
+const { errorMessages } = require('../utils/errorMessages');
 
 const Unauthorized = require('../errors/Unauthorized');
 
