@@ -8,4 +8,4 @@ router.post('/', createMovieValidationCheck, createMovie);
 router.get('/', getMovies);
 router.delete('/:movieId', deleteMovieValidationCheck, deleteMovie);
 
-module.exports = router;
+module.exports = movies;

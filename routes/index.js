@@ -1,18 +1,22 @@
 // единый роут
-const authorization = require('./auth'); // routes/auth
+const router = require('express').Router();
 const movies = require('./movies');
 const users = require('./users');
-const auth = require('../middlewares/auth'); // middlewares/auth
+const auth = require('../middlewares/auth'); // мидлвэйр авторизации
+const { registrationValidationCheck, loginValidationCheck } = require('../middlewares/validation');
 
 const NotFound = require('../errors/NotFound');
 const { errorMessages } = require('../utils/errorMessages');
 
-module.exports = function (app) {
-  app.use('/', authorization);
-  app.use(auth);
-  app.use('/users', users);
-  app.use('/movies', movies);
-  app.all('*', (req, res, next) => {
-    next(new NotFound(errorMessages.wrongPathError));
-  });
-};
+
+router.post('/signup', registrationValidationCheck, createUser);
+router.post('/signin', loginValidationCheck, login);
+
+router.use(auth, users);
+router.use(auth, movies);
+
+router.use((req, res, next) => {
+  next(new NotFound(errorMessages.userNotFoundError));
+});
+
+module.exports = router;
