@@ -4,11 +4,10 @@ const movies = require('./movies');
 const users = require('./users');
 const auth = require('../middlewares/auth'); // мидлвэйр авторизации
 const { registrationValidationCheck, loginValidationCheck } = require('../middlewares/validation');
-const { createUser, login } = require('../controllers/users')
+const { createUser, login } = require('../controllers/users');
 
 const NotFound = require('../errors/NotFound');
 const { errorMessages } = require('../utils/errorMessages');
-
 
 router.post('/signup', registrationValidationCheck, createUser);
 router.post('/signin', loginValidationCheck, login);

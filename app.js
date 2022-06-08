@@ -28,7 +28,6 @@ const cors = require('./middlewares/cors'); // CORS
 const router = require('./routes/index'); // портирование роутов
 const limiter = require('./middlewares/limiter');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const { errorMessages } = require('./utils/errorMessages');
 
 app.use(cors); // CORS
 
