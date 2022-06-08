@@ -27,8 +27,6 @@ module.exports.createUser = (req, res, next) => { // создание польз
     .catch((err) => {
       if (err.code === 11000) {
         next(new Conflict(errorMessages.conflictError));
-      } else if (err.name === 'CastError') {
-        next(new ValidationError(errorMessages.dataError));
       } else {
         next(err);
       }
