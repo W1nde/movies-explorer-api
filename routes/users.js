@@ -6,4 +6,4 @@ const { patchUserValidationCheck } = require('../middlewares/validation');
 router.get('/me', getUser);
 router.patch('/me', patchUserValidationCheck, patchUser);
 
-module.exports = users;
+module.exports = router;
