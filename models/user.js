@@ -6,7 +6,7 @@ const Unauthorized = require('../errors/Unauthorized');
 
 // модель пользователя
 
-const userSchema = new mongoose.Schema ({
+const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema ({
     type: String,
     required: true,
     minlength: 8,
-    select: false
+    select: false,
   },
 
   name: {
@@ -39,18 +39,18 @@ userSchema.statics.findUserByCredentials = function (email, password) {
     .then((user) => {
       if (!user) {
         return Promise.reject(
-          new Unauthorized(errMessages.loginError),
+          new Unauthorized(errorMessages.loginError),
         );
       }
       return bcrypt.compare(password, user.password).then((matched) => {
         if (!matched) {
           return Promise.reject(
-            new Unauthorized(errMessages.loginError),
+            new Unauthorized(errorMessages.loginError),
           );
-       }
-      return user;
+        }
+        return user;
+      });
     });
-  });
-}
+};
 
 module.exports = mongoose.model('user', userSchema);

@@ -3,7 +3,7 @@ const { default: isURL } = require('validator/lib/isURL');
 
 // модель фильма
 
-const movieSchema = new mongoose.Schema ({
+const movieSchema = new mongoose.Schema({
   country: {
     type: String,
     required: true,
@@ -80,7 +80,7 @@ const movieSchema = new mongoose.Schema ({
   nameEN: {
     type: String,
     required: true,
-  }
-})
+  },
+});
 
 module.exports = mongoose.model('movie', movieSchema);

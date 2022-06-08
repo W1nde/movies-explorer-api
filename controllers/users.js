@@ -15,29 +15,29 @@ module.exports.createUser = (req, res, next) => { // создание польз
   bcrypt.hash(password, 10)
     .then((hash) => User.create({
       name, email, password: hash,
-  }))
+    }))
     .then((user) => {
-      const {_id} = user;
+      const { _id } = user;
       res.send({
         _id,
         name,
-        email
+        email,
       });
-  })
+    })
     .catch((err) => {
       if (err.code === 11000) {
         next(new Conflict(errorMessages.conflictError));
       } else if (err.name === 'CastError') {
         next(new ValidationError(errorMessages.dataError));
       } else {
-        next(err)
+        next(err);
       }
-  });
+    });
 };
 
 module.exports.patchUser = (req, res, next) => { // обновление имени и email пользователя
   const { name, email } = req.body;
-  User.findByIdAndUpdate(req.user._id, { name, email }, { runValidators: true, new: true } )
+  User.findByIdAndUpdate(req.user._id, { name, email }, { runValidators: true, new: true })
     .then((user) => res.send({ _id: user._id, name, email }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -47,31 +47,31 @@ module.exports.patchUser = (req, res, next) => { // обновление име�
         next(new CastError(errorMessages.dataError));
       }
       next(err);
-  });
+    });
 };
 
 module.exports.getUser = (req, res, next) => { // получение данных пользователя
-  const {_id} = req.user;
+  const { _id } = req.user;
   User.find({ _id })
     .then((user) => {
       if (!user) {
         return next(new NotFound(errorMessages.userNotFoundError));
       }
       return res.send(...user);
-  })
-  .catch(next)
+    })
+    .catch(next);
 };
 
 module.exports.login = (req, res, next) => { // логирование
   const { email, password } = req.body;
 
-  return User.findUserByCredentials (email, password)
+  return User.findUserByCredentials(email, password)
     .then((user) => {
       // создание токена
       const token = jwt.sign(
         { _id: user.id },
         JWT_SECRET,
-        {expiresIn: '7d' },
+        { expiresIn: '7d' },
       );
       // кукирование токена
       res.cookie('jwt', token, {
@@ -83,7 +83,7 @@ module.exports.login = (req, res, next) => { // логирование
       // возвращение токена
       res.send({ token });
     })
-  .catch(next);
+    .catch(next);
 };
 
 module.exports.signOut = (req, res) => {

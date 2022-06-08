@@ -1,10 +1,10 @@
-require('dotenv').config()
+require('dotenv').config();
 
 const express = require('express');
 
 const { errors } = require('celebrate'); // подключение библиотек валидации
 
-const { PORT=3000 } = process.env;
+const { PORT = 3000 } = process.env;
 
 const app = express();
 
@@ -30,7 +30,7 @@ const limiter = require('./middlewares/limiter');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { errorMessages } = require('./utils/errorMessages');
 
-app.use(cors) // CORS
+app.use(cors); // CORS
 
 /* app.get('/crash-test', () => {
   setTimeout(() => {
@@ -42,7 +42,7 @@ const errorCatcher = require('./errors/errorCatcher');
 
 app.use(requestLogger); // логирование запросов
 
-app.use('/', limiter) // использование лимитера
+app.use('/', limiter); // использование лимитера
 
 routes(app); // использование роутов
 
