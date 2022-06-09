@@ -20,7 +20,7 @@ app.use(helmet());
 // подключение бд
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost:27017/mestodb', {
+mongoose.connect('mongodb://localhost:27017/moviesdb', {
   useNewUrlParser: true,
 });
 
