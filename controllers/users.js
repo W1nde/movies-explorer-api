@@ -5,7 +5,6 @@ const User = require('../models/user');
 const Conflict = require('../errors/Conflict');
 const NotFound = require('../errors/NotFound');
 
-
 const { JWT_SECRET = '2B4B6150645367566B5970337336763979244226452948404D6351655468576D' } = process.env; // псевдослучайный криптоустойчивый ключ
 
 module.exports.createUser = (req, res, next) => { // создание пользователя
@@ -37,18 +36,18 @@ module.exports.patchUser = (req, res, next) => {
     req.user._id,
     { name, email },
     { runValidators: true },
-  )
+  );
   User.find({ email })
     .then(([user]) => {
       if (user && user._id !== req.user._id) {
-        throw new Conflict('Пользователь с таким E-mail уже зарегестрирован')
-    }
-    return findAndModify() // вернуть модифицированный объект бд
-  })
-    .then(() => {
-      res.send({ name, email, });
+        throw new Conflict('Пользователь с таким E-mail уже зарегестрирован');
+      }
+      return findAndModify(); // вернуть модифицированный объект бд
     })
-    .catch(next)
+    .then(() => {
+      res.send({ name, email });
+    })
+    .catch(next);
 };
 
 module.exports.getUser = (req, res, next) => { // получение данных пользователя

@@ -3,8 +3,8 @@ const router = require('express').Router();
 const {
   login,
   createUser,
-  signOut
-} = require('../controllers/users') // методы регистрации, логирования, выхода
+  signOut,
+} = require('../controllers/users'); // методы регистрации, логирования, выхода
 const { registrationValidationCheck, loginValidationCheck } = require('../middlewares/validation'); // проверка ваалидности данных регистрации и авторизации
 
 router.post('/signup', registrationValidationCheck, createUser);

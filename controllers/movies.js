@@ -2,7 +2,7 @@ const Movie = require('../models/movie');
 
 const Forbidden = require('../errors/Forbidden');
 const NotFound = require('../errors/NotFound');
-const ValidationError = require('../errors/ValidationError')
+const ValidationError = require('../errors/ValidationError');
 
 module.exports.createMovie = (req, res, next) => { // создание фильма
   const {
@@ -38,11 +38,11 @@ module.exports.createMovie = (req, res, next) => { // создание филь�
     .then((movie) => res.send(movie)) // передаю фильм в респонс
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new ValidationError('Введены некорректные данные'))
+        next(new ValidationError('Введены некорректные данные'));
       } else {
-        next(err)
-    }
-  })
+        next(err);
+      }
+    });
 };
 
 module.exports.getMovies = (req, res, next) => { // получение фильма
