@@ -1,22 +1,17 @@
 // единый роут
-const router = require('express').Router();
 const movies = require('./movies');
 const users = require('./users');
-const auth = require('../middlewares/auth'); // мидлвэйр авторизации
-const { registrationValidationCheck, loginValidationCheck } = require('../middlewares/validation');
-const { createUser, login } = require('../controllers/users');
+const auth = require('./auth'); // роут авторизации
+const authMiddleware = require('../middlewares/auth'); // мидлвэйр авторизации
 
 const NotFound = require('../errors/NotFound');
-const { errorMessages } = require('../utils/errorMessages');
 
-router.post('/signup', registrationValidationCheck, createUser);
-router.post('/signin', loginValidationCheck, login);
-
-router.use(auth, users);
-router.use(auth, movies);
-
-router.use((req, res, next) => {
-  next(new NotFound(errorMessages.userNotFoundError));
-});
-
-module.exports = router;
+module.exports = function(app) {
+  app.use('/', auth);
+  app.use(authMiddleware);
+  app.use('/users', users);
+  app.use('/movies', movies);
+  app.all('*', (req,res,next) => {
+    next(new NotFound('Страница не существует'));
+  });
+};
