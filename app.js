@@ -13,8 +13,8 @@ const cookieParser = require('cookie-parser'); // подключение биб�
 const helmet = require('helmet'); // модуль безопасности helmet
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(helmet());
 
 // подключение бд
@@ -25,7 +25,7 @@ mongoose.connect('mongodb://localhost:27017/moviesdb', {
 });
 
 const cors = require('./middlewares/cors'); // CORS
-const router = require('./routes/index'); // портирование роутов
+const routes = require('./routes'); // портирование роутов
 const limiter = require('./middlewares/limiter');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
@@ -41,9 +41,9 @@ const errorCatcher = require('./errors/errorCatcher');
 
 app.use(requestLogger); // логирование запросов
 
-app.use(limiter); // использование лимитера
+app.use('/', limiter); // использование лимитера
 
-app.use('/', router); // использование роутов
+routes(app); // использование роутов
 
 // логирование и отслеживание ошибок
 app.use(errorLogger);

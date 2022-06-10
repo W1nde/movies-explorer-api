@@ -6,7 +6,7 @@ const authMiddleware = require('../middlewares/auth'); // мидлвэйр ав�
 
 const NotFound = require('../errors/NotFound');
 
-module.exports = function(app) {
+module.exports = function(app) { // экспорт роутинга в приложение
   app.use('/', auth);
   app.use(authMiddleware);
   app.use('/users', users);
