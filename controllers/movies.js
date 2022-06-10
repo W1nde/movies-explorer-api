@@ -2,6 +2,7 @@ const Movie = require('../models/movie');
 
 const Forbidden = require('../errors/Forbidden');
 const NotFound = require('../errors/NotFound');
+const ValidationError = require('../errors/ValidationError')
 const { errorMessages } = require('../utils/errorMessages');
 
 module.exports.createMovie = (req, res, next) => { // создание фильма
@@ -20,6 +21,7 @@ module.exports.createMovie = (req, res, next) => { // создание филь�
   } = req.body; // беру параметры фильма из тела запроса
 
   const owner = req.user_id; // присваиваю параметру 'owner' id юзера
+
   Movie.create({
     country,
     director,
@@ -34,8 +36,14 @@ module.exports.createMovie = (req, res, next) => { // создание филь�
     nameEN,
     owner,
   }) // создаю массив из полученных ранее объектов
-    .then((movie) => res.send(movie)) // передаю фильм в ответ
-    .catch(next);
+    .then((movie) => res.send(movie)) // передаю фильм в респонс
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        next(new ValidationError(errorMessages.dataError))
+      } else {
+        next(err)
+    }
+  })
 };
 
 module.exports.getMovies = (req, res, next) => { // получение фильма
@@ -46,8 +54,7 @@ module.exports.getMovies = (req, res, next) => { // получение филь�
 
 module.exports.deleteMovie = (req, res, next) => { // удаление фильма
   Movie.findById(req.params.movieId)
-    .orFail()
-    .catch(() => new NotFound(errorMessages.movieNotFoundError))
+    .orFail(new NotFound(errorMessages.movieNotFoundError))
     .then((movie) => {
       if (req.user._id !== movie.owner.toString()) {
         throw new Forbidden(errorMessages.deleteMovieError);
