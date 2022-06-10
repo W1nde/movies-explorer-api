@@ -25,26 +25,31 @@ module.exports.createUser = (req, res, next) => { // создание польз
     })
     .catch((err) => {
       if (err.code === 11000) {
-        next(new Conflict({ message: 'Пользователь с таким E-mail уже зарегестрирован' }));
+        next(new Conflict('Пользователь с таким E-mail уже зарегестрирован'));
       } else {
         next(err);
       }
     });
 };
 
-module.exports.patchUser = (req, res, next) => { // обновление имени и email пользователя
+module.exports.patchUser = (req, res, next) => {
   const { name, email } = req.body;
-  User.findByIdAndUpdate(req.user._id, { name, email }, { runValidators: true, new: true })
-    .then((user) => res.send({ _id: user._id, name, email }))
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        next(new ValidationError({ message: 'Введены некорректные данные' }));
-      }
-      if (err.name === 'CastError') {
-        next(new CastError({ message: 'Введены некорректные данные' }));
-      }
-      next(err);
-    });
+  const findAndModify = () => User.findByIdAndUpdate( // найти и модифицировать объект бд
+    req.user._id,
+    { name, email },
+    { runValidators: true },
+  )
+  User.find({ email })
+    .then(([user]) => {
+      if (user && user._id !== req.user._id) {
+        throw new Conflict('Пользователь с таким E-mail уже зарегестрирован')
+    }
+    return findAndModify() // вернуть модифицированный объект бд
+  })
+    .then(() => {
+      res.send({ name, email, });
+    })
+    .catch(next)
 };
 
 module.exports.getUser = (req, res, next) => { // получение данных пользователя
@@ -52,7 +57,7 @@ module.exports.getUser = (req, res, next) => { // получение данны�
   User.find({ _id })
     .then((user) => {
       if (!user) {
-        return next(new NotFound({ message: 'Данный пользователь не найден' }));
+        return next(new NotFound('Данный пользователь не найден'));
       }
       return res.send(...user);
     })
