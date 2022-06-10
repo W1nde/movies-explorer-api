@@ -6,7 +6,6 @@ const CastError = require('../errors/CastError');
 const Conflict = require('../errors/Conflict');
 const NotFound = require('../errors/NotFound');
 const ValidationError = require('../errors/ValidationError');
-const { errorMessages } = require('../utils/errorMessages');
 
 const { JWT_SECRET = '2B4B6150645367566B5970337336763979244226452948404D6351655468576D' } = process.env; // псевдослучайный криптоустойчивый ключ
 
@@ -26,7 +25,7 @@ module.exports.createUser = (req, res, next) => { // создание польз
     })
     .catch((err) => {
       if (err.code === 11000) {
-        next(new Conflict(errorMessages.conflictError));
+        next(new Conflict({ message: 'Пользователь с таким E-mail уже зарегестрирован' }));
       } else {
         next(err);
       }
@@ -39,10 +38,10 @@ module.exports.patchUser = (req, res, next) => { // обновление име�
     .then((user) => res.send({ _id: user._id, name, email }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new ValidationError(errorMessages.dataError));
+        next(new ValidationError({ message: 'Введены некорректные данные' }));
       }
       if (err.name === 'CastError') {
-        next(new CastError(errorMessages.dataError));
+        next(new CastError({ message: 'Введены некорректные данные' }));
       }
       next(err);
     });
@@ -53,7 +52,7 @@ module.exports.getUser = (req, res, next) => { // получение данны�
   User.find({ _id })
     .then((user) => {
       if (!user) {
-        return next(new NotFound(errorMessages.userNotFoundError));
+        return next(new NotFound({ message: 'Данный пользователь не найден' }));
       }
       return res.send(...user);
     })
@@ -68,7 +67,7 @@ module.exports.login = (req, res, next) => { // логирование
       // создание токена
       const token = jwt.sign(
         { _id: user.id },
-        JWT_SECRET,
+        JWT_SECRET, // 2B4B6150645367566B5970337336763979244226452948404D6351655468576D
         { expiresIn: '7d' },
       );
       // кукирование токена

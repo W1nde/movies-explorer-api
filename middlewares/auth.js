@@ -6,13 +6,13 @@ const { JWT_SECRET = '2B4B6150645367566B5970337336763979244226452948404D63516554
 module.exports = (req, res, next) => {
   const authorization = req.cookies.jwt || req.headers.authorization.replace('Bearer ', '');
   if (!authorization) {
-    return next(new Unauthorized('Ошибка авторизации'));
+    return next(new Unauthorized({ message: 'Ошибка авторизации' }));
   }
   let payload;
   try {
     payload = jwt.verify(authorization, JWT_SECRET);
   } catch (err) {
-    return next(new Unauthorized('Ошибка авторизации'));
+    return next(new Unauthorized({ message: 'Ошибка авторизации'}));
   }
   req.user = payload;
   return next();

@@ -1,8 +1,6 @@
 const { celebrate, Joi } = require('celebrate');
 const validator = require('validator');
 
-const { errorMessages } = require('../utils/errorMessages');
-
 module.exports.patchUserValidationCheck = celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30).required(),
@@ -21,19 +19,19 @@ module.exports.createMovieValidationCheck = celebrate({
       if (validator.isURL(value)) {
         return value;
       }
-      return helpers.message(errorMessages.linkError);
+      return helpers.message('Это поле должно содержать ссылку');
     }),
     trailerLink: Joi.string().required().custom((value, helpers) => {
       if (validator.isURL(value)) {
         return value;
       }
-      return helpers.message(errorMessages.linkError);
+      return helpers.message('Это поле должно содержать ссылку');
     }),
     thumbnail: Joi.string().required().custom((value, helpers) => {
       if (validator.isURL(value)) {
         return value;
       }
-      return helpers.message(errorMessages.linkError);
+      return helpers.message('Это поле должно содержать ссылку');
     }),
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required(),

@@ -1,7 +1,6 @@
 const bcrypt = require('bcryptjs/dist/bcrypt');
 const mongoose = require('mongoose');
 const { default: isEmail } = require('validator/lib/isEmail');
-const { errorMessages } = require('../utils/errorMessages');
 
 const Unauthorized = require('../errors/Unauthorized');
 
@@ -39,12 +38,12 @@ userSchema.statics.findUserByCredentials = function (email, password) {
     .select('+password')
     .then((user) => {
       if (!user) {
-        throw new Unauthorized(errorMessages.loginError);
+        throw new Unauthorized({ message: 'Неверно указана почта и/или пароль' });
       }
       return bcrypt.compare(password, user.password)
         .then((matched) => {
           if (!matched) {
-            throw new Unauthorized(errorMessages.loginError)
+            throw new Unauthorized({ message: 'Неверно указана почта и/или пароль' })
           }
         return user
       })
