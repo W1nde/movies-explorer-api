@@ -38,7 +38,7 @@ module.exports.createMovie = (req, res, next) => { // создание филь�
     .then((movie) => res.send(movie)) // передаю фильм в респонс
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new ValidationError({ message: 'Введены некорректные данные' }))
+        next(new ValidationError('Введены некорректные данные'))
       } else {
         next(err)
     }
@@ -53,10 +53,10 @@ module.exports.getMovies = (req, res, next) => { // получение филь�
 
 module.exports.deleteMovie = (req, res, next) => { // удаление фильма
   Movie.findById(req.params.movieId)
-    .orFail(new NotFound({ message: 'Фильм не найден' }))
+    .orFail(new NotFound('Фильм не найден'))
     .then((movie) => {
       if (req.user._id !== movie.owner.toString()) {
-        throw new Forbidden({ message: 'Вы не можете удалить фильм сохранённый другим пользователем' });
+        throw new Forbidden('Вы не можете удалить фильм сохранённый другим пользователем');
       }
       Movie.findByIdAndDelete(req.params.movieId)
         .then((movieData) => {
