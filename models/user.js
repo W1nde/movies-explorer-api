@@ -35,23 +35,20 @@ const userSchema = new mongoose.Schema({
 
 // поиска пользователя
 userSchema.statics.findUserByCredentials = function (email, password) {
-  return this.findOne({ email }, { runValidators: true })
+  return this.findOne({ email })
     .select('+password')
     .then((user) => {
       if (!user) {
-        return Promise.reject(
-          new Unauthorized(errorMessages.loginError),
-        );
+        throw new Unauthorized(errorMessages.loginError);
       }
-      return bcrypt.compare(password, user.password).then((matched) => {
-        if (!matched) {
-          return Promise.reject(
-            new Unauthorized(errorMessages.loginError),
-          );
-        }
-        return user;
-      });
-    });
-};
+      return bcrypt.compare(password, user.password)
+        .then((matched) => {
+          if (!matched) {
+            throw new Unauthorized(errorMessages.loginError)
+          }
+        return user
+      })
+  })
+}
 
 module.exports = mongoose.model('user', userSchema);
