@@ -1,53 +1,52 @@
 const Movie = require('../models/movie');
 
-const Forbidden = require('../errors/Forbidden');
 const NotFound = require('../errors/NotFound');
+const Forbidden = require('../errors/Forbidden');
 const ValidationError = require('../errors/ValidationError');
 
 module.exports.createMovie = (req, res, next) => { // создание фильма
   const {
     country,
     director,
-    durtion,
+    duration,
     year,
     description,
     image,
     trailerLink,
-    thumbnail,
-    movieId,
     nameRU,
     nameEN,
-  } = req.body; // беру параметры фильма из тела запроса
+    thumbnail,
+    movieId,
+  } = req.body;
 
-  const owner = req.user_id; // присваиваю параметру 'owner' id юзера
-
+  const owner = req.user._id;
   Movie.create({
     country,
     director,
-    durtion,
+    duration,
     year,
     description,
     image,
     trailerLink,
-    thumbnail,
-    movieId,
     nameRU,
     nameEN,
+    thumbnail,
+    movieId,
     owner,
-  }) // создаю массив из полученных ранее объектов
-    .then((movie) => res.send(movie)) // передаю фильм в респонс
+  })
+    .then((movie) => res.send(movie))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new ValidationError('Введены некорректные данные'));
+        next(new ValidationError());
       } else {
         next(err);
       }
     });
 };
 
-module.exports.getMovies = (req, res, next) => { // получение фильма
+module.exports.getMovies = (req, res, next) => { // получение фильмов
   Movie.find({})
-    .then((movies) => res.send(movies))
+    .then((movie) => res.send(movie))
     .catch(next);
 };
 
