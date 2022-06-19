@@ -8,7 +8,7 @@
     "lint": "npx eslint .",
     "dev": "nodemon app.js",
     "start": "node app.js",
-    "deploy": "scp -r ../movies-explorer-api/* markshadpalov@51.250.99.204:/home/markshadpalov/movies-explorer-api"
+    "deploy": "scp -r ../movies-explorer-api/* markshadpalov@51.250.24.137:/home/markshadpalov/movies-explorer-api"
   },
   "repository": {
     "type": "git",
