@@ -2,4 +2,4 @@
 API для дипломного проекта
 
 ## Домен бэкенда - 
-'http://movies-explorer.nomoreparties.sbs'
+'http://movies-explorer-api.nomoreparties.sbs'
